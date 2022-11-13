@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 
 export default function App() {
 
-  const[isLogin, setIsLogin] = useState(false);
+  const[isLogin, setIsLogin] = useState(true);
 
   return (
     <NavigationContainer>

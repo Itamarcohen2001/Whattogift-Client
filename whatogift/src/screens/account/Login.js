@@ -2,7 +2,8 @@ import React,{useState, useEffect} from "react";
 import { View, Text,ActivityIndicator,Alert} from "react-native";
 import Style from '../../utilis/AppStyle';
 import {TextInput,Button} from 'react-native-paper';
-import Colors from '../../utilis/AppColors'
+import Colors from '../../utilis/AppColors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login=()=>{
 
@@ -35,10 +36,24 @@ const Login=()=>{
                 const data = await response.json();
                 if(data.status)
                 {
-                    setIsLoading(true);
-                    setErrorMsg(data.token);
-                }
-                else{
+                    
+                    AsyncStorage.setItem('Token', JSON.stringify({
+                        token: data.token
+                    }))
+
+                    // const overview_url='http://10.70.6.35:3001/api/account/getOverview';
+                    // const overview_response= await fetch(overview_url,{
+                    //     method: 'get',
+                    //     headers: {
+                    //         'Content_Type' : 'application/json',
+                    //         'Authorization' : `Bearer ${data.token}`
+                    //     }
+                    // });
+                    // const overview_data = await overview_response.json();
+                    // setErrorMsg(overview_data.message);
+                    setIsLoading(false);
+
+                } else{
                     setIsLoading(false);
                     setErrorMsg(data.message);
                 }

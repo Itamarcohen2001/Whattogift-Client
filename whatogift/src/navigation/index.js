@@ -65,7 +65,7 @@ const AccountStackNavigator = createNativeStackNavigator();
 export const AccountStack = () => {
     return(
         <GiftsStackNavigator.Navigator>
-            <GiftsStackNavigator.Screen name='login' component={Login} />
+            <GiftsStackNavigator.Screen name='login' component={Login} />   
             <GiftsStackNavigator.Screen name='signup' component={Signup} />
             <GiftsStackNavigator.Screen name='verify' component={Verify} />
         </GiftsStackNavigator.Navigator>

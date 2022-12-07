@@ -4,6 +4,9 @@ import Style from '../../utilis/AppStyle';
 import {TextInput,Button} from 'react-native-paper';
 import Colors from '../../utilis/AppColors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as actions from '../../../store/actions';
+import {useDispatch} from 'react-redux';
+
 
 const Login=()=>{
 
@@ -11,6 +14,7 @@ const Login=()=>{
     const [password, setPassword]= useState('');
     const [isLoading,setIsLoading]=useState(false);
     const [errorMsg, setErrorMsg]=useState(null);
+    const dispatch =useDispatch();
 
     useEffect(() => {
         if(errorMsg){
@@ -20,53 +24,19 @@ const Login=()=>{
 
     const login = async() => {
         setIsLoading(true);
-        if(email != "" && password != "")
-        {
-            try{
-                const url ='http://192.168.56.1:3001/api/account/login';
-                const response = await fetch(url, {
-                    method:'post',
-                    headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({
-                        email:email,
-                        password:password
-                    })
-                })
-
-                const data = await response.json();
-                if(data.status)
-                {
-                    
-                    AsyncStorage.setItem('Token', JSON.stringify({
-                        token: data.token
-                    }))
-
-                    // const overview_url='http://10.70.6.35:3001/api/account/getOverview';
-                    // const overview_response= await fetch(overview_url,{
-                    //     method: 'get',
-                    //     headers: {
-                    //         'Content_Type' : 'application/json',
-                    //         'Authorization' : `Bearer ${data.token}`
-                    //     }
-                    // });
-                    // const overview_data = await overview_response.json();
-                    // setErrorMsg(overview_data.message);
-                    setIsLoading(false);
-
-                } else{
-                    setIsLoading(false);
-                    setErrorMsg(data.message);
-                }
-
-            }
-            catch (error){
+        if(email != '' && password != ''){
+            
+            const action = actions.login(email,password);
+            try {
+                dispatch(action);
                 setIsLoading(false);
-                setErrorMsg(error.message);
+            } catch (error) {
+                
             }
-        }
+        }       
         else{
             setIsLoading(false);
-            setErrorMsg('All input required');
+            setErrorMsg('Email and password are required');
         }
     }
 
